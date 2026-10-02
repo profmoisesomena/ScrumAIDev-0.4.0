@@ -63,8 +63,9 @@ The disposable workflow produced Discovery, Requirements, one User Story and a p
 
 - OpenCode, Codex and Claude Code 0.4.0 live regression sessions were not run. Their automated projections and hash regressions passed.
 - Claude Code VS Code extension UI and all-harness interactive brownfield validation were not run for this release.
-- Remote CI: no runs were visible for the feature branch when checked. A pull request has not been opened or merged, so PR CI evidence is not yet available.
-- The feature branch has not been merged to `main`.
+- Draft PR [#1](https://github.com/profmoisesomena/ScrumAIDev-0.4.0/pull/1) was opened from `feat/antigravity-adapter` to `main`.
+- PR CI completed: **18 checks successful, 1 skipped (Docker build; no Docker capability detected), 0 failing/cancelled/pending**. The checks validate CI only; they do not satisfy missing live harness acceptance checks or PR review/merge requirements.
+- The PR remains a draft and has not been merged to `main`.
 - No release tag, GitHub release or published assets/checksums exist. Creating the tag now would bypass the documented promotion gate.
 
 The remaining cross-harness gates are defined in `docs/adapter_live_validation_plan.md` and `docs/release_checklist.md`. This report distinguishes maintainer-reported manual evidence, local command output, automated tests and checks not executed in this session. Retain the supplied screenshots with PR/release review records if durable audit evidence is required.

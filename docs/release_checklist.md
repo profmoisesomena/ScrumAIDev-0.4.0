@@ -34,4 +34,6 @@ Evidence status updated 2026-10-02 from local Python 3.11.7 validation and maint
 ## Publication
 
 - [x] `RELEASE_NOTES_0.4.0.md` and `VALIDATION_REPORT_0.4.0.md` exist (required by `cli-release.yml`).
+- [x] PR #1 opened; remote CI completed with 18 successful checks and 1 skipped Docker build.
+- [ ] Required live cross-harness gates complete, PR review approved, and PR merged to `main`.
 - [ ] tag and release artifacts are immutable and hashes are recorded.

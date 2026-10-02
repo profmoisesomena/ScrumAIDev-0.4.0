@@ -1,0 +1,68 @@
+name: "Epic"
+description: "Create an Epic issue as a GitHub projection of the local backlog"
+labels: ["type:epic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only when an Epic issue needs to be created or repaired manually.
+        The canonical source remains in the local planning artifacts, especially `docs/product_backlog.md`.
+        Default team and assignee resolution should follow `docs/project_manifest.md` and `/publish-github-planning`.
+
+  - type: input
+    id: epic_id
+    attributes:
+      label: "Epic ID"
+      description: "Use the same identifier used in the local backlog."
+      placeholder: "EPIC-001"
+    validations:
+      required: true
+
+  - type: input
+    id: backlog_ref
+    attributes:
+      label: "Local backlog reference"
+      description: "Path or anchor for the canonical planning artifact."
+      placeholder: "docs/product_backlog.md"
+    validations:
+      required: true
+
+  - type: textarea
+    id: operational_summary
+    attributes:
+      label: "Operational summary"
+      description: "Short GitHub summary for tracking. Keep full details in local docs."
+      placeholder: |
+        Summarize the Epic objective, intended outcome, and tracking context.
+    validations:
+      required: true
+
+  - type: textarea
+    id: child_user_stories
+    attributes:
+      label: "Child user stories"
+      description: "List related US IDs or issue links when they already exist."
+      value: |
+        - [ ] US-XXX
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Dependencies and blockers"
+      description: "Capture operational blockers, external dependencies, or cross-team links."
+      value: |
+        - None identified yet
+
+  - type: textarea
+    id: local_links
+    attributes:
+      label: "Related local artifacts"
+      description: "Add paths to stories, sprint files, specs, or other canonical artifacts."
+      value: |
+        - docs/product_backlog.md
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes"
+      description: "Optional operational notes for GitHub readers."

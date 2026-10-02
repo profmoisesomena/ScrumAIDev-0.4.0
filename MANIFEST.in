@@ -1,0 +1,3 @@
+graft src/scrumaidev/runtime
+global-exclude *.py[cod]
+prune **/__pycache__

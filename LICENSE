@@ -1,0 +1,36 @@
+Copyright (c) 2026 ScrumAIDev maintainers. All rights reserved.
+
+INTERIM LICENSE NOTICE — NOT A FINAL LICENSE
+
+The maintainers have not yet selected a permanent license for this project.
+This notice is a deliberately temporary, restrictive placeholder that
+governs this repository and its contents (source code, CLI, documentation,
+templates, and workflows) until it is replaced by an explicit license
+chosen by the maintainers. Its absence in earlier pre-release versions did
+not imply permission for unrestricted use; this notice makes the default
+explicit.
+
+Until replaced, the following terms apply:
+
+1. All rights not expressly granted below are reserved by the copyright
+   holder.
+2. You may view, clone, and run this software for your own evaluation,
+   personal use, and non-commercial research purposes (including academic
+   research and coursework).
+3. You may NOT redistribute, sublicense, publish, or make derivative works
+   of this software available to third parties, in source or binary form,
+   without prior written authorization from the copyright holder.
+4. You may NOT use this software, in whole or in part, for commercial
+   purposes without prior written authorization from the copyright holder.
+5. This software is provided "AS IS", without warranty of any kind, express
+   or implied, including but not limited to the warranties of
+   merchantability, fitness for a particular purpose, and noninfringement.
+   In no event shall the copyright holder be liable for any claim, damages,
+   or other liability, whether in an action of contract, tort, or
+   otherwise, arising from, out of, or in connection with the software or
+   the use or other dealings in the software.
+
+The maintainers intend to adopt a more permissive and explicit license
+(e.g., an OSI-approved open-source license) in a future release. This file
+will be replaced at that time; until then, treat the restrictions above as
+authoritative.

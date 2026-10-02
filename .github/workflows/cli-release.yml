@@ -1,0 +1,89 @@
+name: cli-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build wheel
+        run: python -m pip wheel . --no-deps -w dist
+      - name: Verify package version matches tag
+        shell: bash
+        run: |
+          PKG_VERSION=$(PYTHONPATH=src python -c 'import scrumaidev; print(scrumaidev.__version__)')
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Package version $PKG_VERSION does not match tag $TAG_VERSION" >&2
+            exit 1
+          fi
+      - name: Add installers to release assets
+        run: |
+          cp installer/install.ps1 dist/install.ps1
+          cp installer/install.sh dist/install.sh
+          chmod +x dist/install.sh
+      - name: Build release bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="${GITHUB_REF_NAME#v}"
+          BUNDLE_DIR="bundle-stage"
+
+          mkdir -p "$BUNDLE_DIR"
+
+          # Documentation
+          cp README.md "$BUNDLE_DIR/README.md"
+          cp "RELEASE_NOTES_${VERSION}.md" \
+             "$BUNDLE_DIR/RELEASE_NOTES_${VERSION}.md"
+          cp "VALIDATION_REPORT_${VERSION}.md" \
+             "$BUNDLE_DIR/VALIDATION_REPORT_${VERSION}.md"
+
+          # Use exactly the same wheel that will be published
+          cp dist/scrumaidev-${VERSION}-py3-none-any.whl \
+             "$BUNDLE_DIR/"
+
+          # Build source archive from the exact tagged commit
+          git archive \
+            --format=zip \
+            --prefix="ScrumAIDev-${VERSION}/" \
+            -o "$BUNDLE_DIR/ScrumAIDev-${VERSION}-source.zip" \
+            "$GITHUB_SHA"
+
+          # Internal checksums for bundle contents
+          (
+            cd "$BUNDLE_DIR"
+
+            sha256sum \
+              README.md \
+              "RELEASE_NOTES_${VERSION}.md" \
+              "VALIDATION_REPORT_${VERSION}.md" \
+              "ScrumAIDev-${VERSION}-source.zip" \
+              scrumaidev-${VERSION}-py3-none-any.whl \
+              > "ScrumAIDev-${VERSION}-SHA256SUMS.txt"
+
+            zip -q \
+              "../dist/ScrumAIDev-${VERSION}-release-bundle.zip" \
+              README.md \
+              "RELEASE_NOTES_${VERSION}.md" \
+              "VALIDATION_REPORT_${VERSION}.md" \
+              "ScrumAIDev-${VERSION}-SHA256SUMS.txt" \
+              "ScrumAIDev-${VERSION}-source.zip" \
+              scrumaidev-${VERSION}-py3-none-any.whl
+          )
+      - name: Checksums
+        run: sha256sum dist/* > dist/SHA256SUMS.txt
+      - name: Create GitHub release and attach artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --generate-notes --verify-tag

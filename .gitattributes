@@ -1,0 +1,19 @@
+# Line endings: LF in the repository and in every checkout, on every OS.
+#
+# The packaged runtime (src/scrumaidev/runtime/core/) is hashed byte-for-byte
+# into `core_sha256` / `runtime_sha256`. Without this file, a Windows checkout
+# with `core.autocrlf=true` turns text files into CRLF, so a wheel built from
+# that checkout would carry a different core identity than the official
+# release, and `installer/install.sh` would not run under sh. Matches
+# `.editorconfig` (end_of_line = lf).
+* text=auto eol=lf
+
+# Binary artifacts: never convert.
+*.zip binary
+*.whl binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

@@ -1,0 +1,64 @@
+name: "Task"
+description: "Create a Task issue as a GitHub projection of a local task breakdown"
+labels: ["type:task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only when a Task issue needs to be created or repaired manually.
+        The canonical source remains in the local planning artifacts, especially `docs/tasks/breakdown_US-XXX.md`.
+        If your organization uses issue types or issue fields, set them in the GitHub sidebar after creation.
+        Default team and assignee resolution should follow `docs/project_manifest.md` and `/publish-github-planning`.
+
+  - type: input
+    id: parent_us_issue
+    attributes:
+      label: "Parent User Story issue"
+      description: "Reference the parent User Story issue number or URL."
+      placeholder: "#34"
+    validations:
+      required: true
+
+  - type: input
+    id: breakdown_ref
+    attributes:
+      label: "Local breakdown reference"
+      description: "Path to the canonical task breakdown file."
+      placeholder: "docs/tasks/breakdown_US-001.md"
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_scope
+    attributes:
+      label: "Technical scope"
+      description: "Short operational summary of the task scope."
+      placeholder: |
+        Describe what this task needs to change and any important boundaries.
+    validations:
+      required: true
+
+  - type: textarea
+    id: done_signal
+    attributes:
+      label: "Done signal"
+      description: "Describe what must be true before this task can be closed."
+      value: |
+        - Implementation complete
+        - Parent US updated if needed
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Dependencies"
+      description: "List prerequisite tasks, issues, or blockers."
+      value: |
+        - None identified yet
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes"
+      description: "Optional operational notes for GitHub readers."

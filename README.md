@@ -53,7 +53,8 @@ Para a release `0.3.0`:
 - pelo menos um harness instalado para o teste real:
   - OpenCode; ou
   - Codex; ou
-  - Claude Code (CLI ou extensão para VS Code).
+  - Claude Code (CLI ou extensão para VS Code); ou
+  - Google Antigravity (IDE ou CLI).
 
 Em Windows, para OpenCode, prefira executar **VS Code + WSL/Ubuntu** e instalar também `scrumaidev` dentro do mesmo WSL. Evite misturar CLI do Windows com OpenCode do WSL.
 
@@ -107,6 +108,7 @@ Esperado:
 E os adapters:
 
 ```text
+antigravity  Google Antigravity        delivery=skills
 claude       Claude Code              delivery=skills
 codex        OpenAI Codex CLI         delivery=skills
 opencode     OpenCode                 delivery=commands+skills
@@ -161,19 +163,25 @@ pwd
 OpenCode:
 
 ```bash
-scrumaidev config --harness opencode --pin 0.3.0 --dry-run
+scrumaidev config --harness opencode --pin 0.4.0 --dry-run
 ```
 
 Codex:
 
 ```bash
-scrumaidev config --harness codex --pin 0.3.0 --dry-run
+scrumaidev config --harness codex --pin 0.4.0 --dry-run
 ```
 
 Claude Code:
 
 ```bash
-scrumaidev config --harness claude --pin 0.3.0 --dry-run
+scrumaidev config --harness claude --pin 0.4.0 --dry-run
+```
+
+Google Antigravity:
+
+```bash
+scrumaidev config --harness antigravity --pin 0.4.0 --dry-run
 ```
 
 Leia o plano. Em um projeto novo, a maior parte das linhas deve aparecer como `create`.
@@ -185,19 +193,25 @@ Leia o plano. Em um projeto novo, a maior parte das linhas deve aparecer como `c
 Para OpenCode:
 
 ```bash
-scrumaidev config --harness opencode --pin 0.3.0
+scrumaidev config --harness opencode --pin 0.4.0
 ```
 
 Para Codex:
 
 ```bash
-scrumaidev config --harness codex --pin 0.3.0
+scrumaidev config --harness codex --pin 0.4.0
 ```
 
 Para Claude Code:
 
 ```bash
-scrumaidev config --harness claude --pin 0.3.0
+scrumaidev config --harness claude --pin 0.4.0
+```
+
+Para Google Antigravity:
+
+```bash
+scrumaidev config --harness antigravity --pin 0.4.0
 ```
 
 Depois valide:
@@ -238,6 +252,14 @@ Em Claude Code, devem existir uma rule de projeto e skills em:
 ```
 
 O adapter Claude **não** cria nem altera `CLAUDE.md` ou `.claude/settings.json`; se o projeto já tiver esses arquivos, eles são preservados.
+
+Em Google Antigravity, devem existir skills de workflow em:
+
+```text
+.agents/skills/scrumaidev-*/SKILL.md
+```
+
+O adapter Antigravity **não** cria `GEMINI.md`, diretório `.gemini/` nem facades de specialist skills; o Antigravity descobre nativamente `.agents/skills/`, `AGENTS.md` e `.agents/rules/`.
 
 Em todos os casos, os workflows canônicos permanecem em:
 

@@ -1,0 +1,88 @@
+name: "User Story"
+description: "Create a User Story issue as a GitHub projection of a local story"
+labels: ["type:user-story"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only when a User Story issue needs to be created or repaired manually.
+        The canonical source remains in the local planning artifacts, especially `docs/stories/US-XXX.md`.
+        If your organization uses issue types or issue fields, set them in the GitHub sidebar after creation.
+        Default team and assignee resolution should follow `docs/project_manifest.md` and `/publish-github-planning`.
+
+  - type: input
+    id: us_id
+    attributes:
+      label: "User Story ID"
+      description: "Use the same identifier used in the local story file."
+      placeholder: "US-001"
+    validations:
+      required: true
+
+  - type: input
+    id: epic_issue
+    attributes:
+      label: "Parent Epic issue"
+      description: "Reference the parent Epic issue number or URL."
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: input
+    id: story_ref
+    attributes:
+      label: "Local story reference"
+      description: "Path to the canonical story file."
+      placeholder: "docs/stories/US-001.md"
+    validations:
+      required: true
+
+  - type: input
+    id: breakdown_ref
+    attributes:
+      label: "Task breakdown reference"
+      description: "Path to the technical breakdown when it already exists."
+      placeholder: "docs/tasks/breakdown_US-001.md"
+
+  - type: dropdown
+    id: behavior_change
+    attributes:
+      label: "Behavior change"
+      description: "Indicate whether this story changes visible system behavior."
+      options:
+        - "YES"
+        - "NO"
+    validations:
+      required: true
+
+  - type: textarea
+    id: operational_summary
+    attributes:
+      label: "Operational summary"
+      description: "Short GitHub summary for execution and review. Keep full details in local docs."
+      placeholder: |
+        Summarize the user outcome, scope, and operational context.
+    validations:
+      required: true
+
+  - type: textarea
+    id: related_artifacts
+    attributes:
+      label: "Related artifacts"
+      description: "List specs, contracts, BDD files, sprint files, or related issues."
+      value: |
+        - docs/stories/US-001.md
+
+  - type: textarea
+    id: child_tasks
+    attributes:
+      label: "Child tasks"
+      description: "List related task IDs or issue links when they already exist."
+      value: |
+        - [ ] Task issue or local task reference
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes"
+      description: "Optional operational notes for GitHub readers."

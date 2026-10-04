@@ -255,7 +255,7 @@ Manifest shape:
 ```json
 {
   "schema_version": 2,
-  "scrumaidev_version": "0.4.0",
+  "scrumaidev_version": "0.4.1",
   "core_sha256": "...",
   "runtime_sha256": "...",
   "harness": "codex",
@@ -280,16 +280,16 @@ Manifest shape:
 
 `core_sha256` must be identical across harnesses for the same ScrumAIDev version. `runtime_sha256` is harness-specific because it includes the adapter projection.
 
-Schema v2 is unchanged in 0.4.0; `harness` may be `opencode`, `codex`, `claude`, or `antigravity`.
+Schema v2 is unchanged in 0.4.x; `harness` may be `opencode`, `codex`, `claude`, or `antigravity`.
 
 ## 9. CLI contract
 
 ```bash
 scrumaidev adapters
-scrumaidev config --harness opencode --pin 0.4.0
-scrumaidev config --harness codex --pin 0.4.0
-scrumaidev config --harness claude --pin 0.4.0
-scrumaidev config --harness antigravity --pin 0.4.0
+scrumaidev config --harness opencode --pin 0.4.1
+scrumaidev config --harness codex --pin 0.4.1
+scrumaidev config --harness claude --pin 0.4.1
+scrumaidev config --harness antigravity --pin 0.4.1
 scrumaidev doctor
 scrumaidev uninstall
 ```

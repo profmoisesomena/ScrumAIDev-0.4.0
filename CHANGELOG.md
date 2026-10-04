@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.1 — Unreleased
+## 0.4.1 — 2026-10-04 — Safe reconfiguration
 
 Bug-fix release for reconfiguring existing projects. No canonical workflow, skill, rule or adapter projection changed: `core_sha256` and every adapter `runtime_sha256` are identical to 0.4.0.
 

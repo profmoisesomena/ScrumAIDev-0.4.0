@@ -28,5 +28,5 @@ ScrumAIDev 0.4.0 adds Google Antigravity as its fourth harness adapter. The adap
 
 ## Known limitations
 
-- Switching harness or upgrading an already configured project can leave the previous adapter files behind, untracked by the manifest; `config` without `--harness` switches an existing project to OpenCode. Fix prepared for 0.4.1. Workaround for 0.4.0: run `scrumaidev uninstall` before configuring another harness, and always pass `--harness`.
+- Switching harness or upgrading an already configured project can leave the previous adapter files behind, untracked by the manifest; `config` without `--harness` switches an existing project to OpenCode. Fixed in 0.4.1 (see `RELEASE_NOTES_0.4.1.md`). Workaround for 0.4.0: run `scrumaidev uninstall` before configuring another harness, and always pass `--harness`.
 - The shared `skill-creator` skill's evaluation scripts call the Claude Code CLI (`claude -p`); that step only works where Claude Code is installed.

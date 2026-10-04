@@ -1,6 +1,6 @@
 # Live Validation Plan — Harness Adapter API v1
 
-This plan validates the ScrumAIDev 0.4.0 package in real harness sessions after package-level tests pass.
+This plan validates the ScrumAIDev 0.4.x packages in real harness sessions after package-level tests pass.
 
 ## A. Baseline safeguards
 
@@ -18,8 +18,8 @@ Record before each run:
 ## B. OpenCode validation
 
 ```bash
-scrumaidev config --harness opencode --pin 0.4.0 --dry-run
-scrumaidev config --harness opencode --pin 0.4.0
+scrumaidev config --harness opencode --pin 0.4.1 --dry-run
+scrumaidev config --harness opencode --pin 0.4.1
 scrumaidev doctor
 opencode
 ```
@@ -36,8 +36,8 @@ Acceptance checks:
 ## C. Codex validation
 
 ```bash
-scrumaidev config --harness codex --pin 0.4.0 --dry-run
-scrumaidev config --harness codex --pin 0.4.0
+scrumaidev config --harness codex --pin 0.4.1 --dry-run
+scrumaidev config --harness codex --pin 0.4.1
 scrumaidev doctor
 codex
 ```
@@ -88,8 +88,8 @@ It consumes model tokens (about USD 1–2 per run with the default model) and is
 ### C2.2 Manual (VS Code extension UI)
 
 ```bash
-scrumaidev config --harness claude --pin 0.4.0 --dry-run
-scrumaidev config --harness claude --pin 0.4.0
+scrumaidev config --harness claude --pin 0.4.1 --dry-run
+scrumaidev config --harness claude --pin 0.4.1
 scrumaidev doctor
 ```
 
@@ -126,8 +126,8 @@ Acceptance checks:
 The Google Antigravity CLI (`agy`) currently lacks a headless/non-interactive one-shot mode (`-p` equivalent). Therefore, validation is conducted **manually** inside an interactive Antigravity session.
 
 ```bash
-scrumaidev config --harness antigravity --pin 0.4.0 --dry-run
-scrumaidev config --harness antigravity --pin 0.4.0
+scrumaidev config --harness antigravity --pin 0.4.1 --dry-run
+scrumaidev config --harness antigravity --pin 0.4.1
 scrumaidev doctor
 agy
 ```
@@ -184,9 +184,9 @@ Compare:
 
 The expected result is **methodology equivalence with harness-specific interaction differences**, not byte-identical model outputs.
 
-## F. Promotion gate for 0.4.0
+## F. Promotion gate for 0.4.x
 
-Do not publish/promote a public 0.4.0 release until:
+Do not promote a 0.4.x release publicly until:
 
 - package tests pass;
 - OpenCode live validation passes (regression);

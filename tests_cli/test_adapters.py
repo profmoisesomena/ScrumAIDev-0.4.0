@@ -15,6 +15,17 @@ def test_registry_exposes_opencode_codex_and_claude():
     assert get_adapter("codex").capabilities.skills is True
 
 
+
+def test_multi_install_safe_matches_projection_path_overlap():
+    """`multi_install_safe=True` promises no path overlap with any other
+    official adapter; adapters that do overlap must declare False."""
+    from scrumaidev.runtime_ops import adapter_entries
+
+    paths = {h: {rel for rel, _data, _role in adapter_entries(h)} for h in supported_harnesses()}
+    for harness in supported_harnesses():
+        overlaps = any(paths[harness] & paths[other] for other in supported_harnesses() if other != harness)
+        assert get_adapter(harness).capabilities.multi_install_safe is not overlaps, harness
+
 def test_opencode_projection_keeps_thin_command_facades(tmp_path: Path):
     configure(tmp_path, "opencode", __version__)
     command = tmp_path / ".opencode/commands/scope-idea.md"

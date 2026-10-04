@@ -11,7 +11,11 @@ Bug-fix release for reconfiguring existing projects. No canonical workflow, skil
 - `doctor` and `uninstall` no longer follow manifest paths that resolve outside the project (`unsafe-path` / `skip-unsafe-path`).
 - `doctor` header uses an ASCII separator, which rendered as `�` on Windows code-page consoles.
 
+### Changed
+- `multi_install_safe` is now `False` for Codex and Antigravity, which project the same `.agents/skills/scrumaidev-*/SKILL.md` paths with different content; OpenCode and Claude Code keep `True`. The flag's meaning (no path overlap with any other official adapter, for future multi-harness installs) is now documented in the Adapter API v1. It only appears in manifest metadata: no runtime hash changes.
+
 ### Added
+- `tests_cli/test_adapters.py::test_multi_install_safe_matches_projection_path_overlap`.
 - `tests_cli/test_harness_switch.py` (11 tests: harness switch, shared-path switch, recorded-harness default, edited stale file, dry-run, upgrade update, file dropped by newer runtime, user-modified conflict, unsafe manifest paths).
 
 ## 0.4.0 — Google Antigravity adapter

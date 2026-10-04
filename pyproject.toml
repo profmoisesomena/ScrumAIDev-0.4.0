@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
-  {name = "ScrumAIDev maintainers"}
+  {name = "Prof. Moises Omena"}
 ]
 keywords = ["scrum", "ai", "agents", "software-engineering", "opencode", "codex", "claude-code", "antigravity", "agent-harness"]
 classifiers = [
@@ -24,6 +24,7 @@ classifiers = [
 ]
 
 [project.urls]
+Author = "https://github.com/profmoisesomena"
 Repository = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0"
 Changelog = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0/blob/main/CHANGELOG.md"
 Releases = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0/releases"

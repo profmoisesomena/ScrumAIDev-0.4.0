@@ -12,8 +12,10 @@ from typing import Iterable
 from . import __version__
 from .adapters import CoreSkill, get_adapter, supported_harnesses
 
+DEFAULT_HARNESS = "opencode"
 MANIFEST_DIR = ".scrumaidev"
 MANIFEST_PATH = f"{MANIFEST_DIR}/manifest.json"
+OWNED_ROLES = ("managed", "adapter")
 CANONICAL_AGENTS_PATH = f"{MANIFEST_DIR}/AGENTS.md"
 BRIDGE_START = "<!-- scrumaidev:start -->"
 BRIDGE_END = "<!-- scrumaidev:end -->"
@@ -144,6 +146,58 @@ def _normalized_text(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
 
 
+def _project_path(project: Path, rel: str) -> Path | None:
+    """Resolve a manifest-relative path, refusing anything outside the project.
+
+    `project` must already be resolved. Manifests are project files and may be
+    edited by hand, so their paths are never trusted to stay inside it.
+    """
+    if not isinstance(rel, str) or not rel:
+        return None
+    target = (project / rel).resolve()
+    if target == project or project not in target.parents:
+        return None
+    return target
+
+
+def _previous_manifest(project: Path) -> dict | None:
+    """Return the existing manifest, or None if absent or unreadable."""
+    path = project / MANIFEST_PATH
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _previously_owned(manifest: dict | None) -> dict[str, str]:
+    """Map path -> recorded sha256 for files a previous config installed as
+    ScrumAIDev-owned (managed core or adapter projection). Seeds and the root
+    `AGENTS.md` are project artifacts and are never considered owned."""
+    owned: dict[str, str] = {}
+    for rec in (manifest or {}).get("files", []):
+        if not isinstance(rec, dict):
+            continue
+        path, sha = rec.get("path"), rec.get("sha256")
+        if isinstance(path, str) and isinstance(sha, str) and rec.get("role", "managed") in OWNED_ROLES:
+            owned[path] = sha
+    return owned
+
+
+def _prune_empty_parents(project: Path, path: Path) -> None:
+    """Remove now-empty parent directories of `path`, stopping at the project
+    root or at the first directory that still holds anything."""
+    parent = path.parent
+    while parent != project and project in parent.parents:
+        try:
+            parent.rmdir()
+        except OSError:
+            return
+        parent = parent.parent
+
+
 def _install_root_agents(project: Path, dry_run: bool) -> tuple[FileRecord, str]:
     root_agents = project / "AGENTS.md"
     canonical = _resource_root().joinpath("AGENTS.md").read_bytes()
@@ -199,18 +253,40 @@ def runtime_sha256(harness: str = "opencode") -> str:
     return h.hexdigest()
 
 
-def configure(project: Path, harness: str, pin: str | None, dry_run: bool = False, force: bool = False) -> dict:
+def configure(
+    project: Path, harness: str | None, pin: str | None, dry_run: bool = False, force: bool = False
+) -> dict:
+    """Install or update ScrumAIDev in `project`.
+
+    `harness=None` keeps the harness recorded in an existing manifest (or uses
+    the default for a first install). Files a previous config installed as
+    ScrumAIDev-owned and that are still byte-identical to their recorded hash
+    may be updated without `--force`; those the new projection no longer
+    contains (harness switch, upgrade) are removed instead of being orphaned.
+    """
     project = project.resolve()
     if not project.exists() or not project.is_dir():
         raise ValueError(f"Project directory does not exist: {project}")
+    previous = _previous_manifest(project)
+    if harness is None:
+        recorded = (previous or {}).get("harness")
+        harness = recorded if recorded in supported_harnesses() else DEFAULT_HARNESS
     adapter = get_adapter(harness)
     if pin and pin != __version__:
         raise ValueError(f"Requested pin {pin!r} does not match installed ScrumAIDev {__version__!r}")
 
+    previously_owned = _previously_owned(previous)
     actions: list[dict] = []
     records: list[FileRecord] = []
     conflicts: list[str] = []
     writes: list[tuple[Path, bytes]] = []
+
+    def replace_action(rel: str, actual: str) -> str | None:
+        # An unmodified file from a previous ScrumAIDev config is ours to
+        # update; anything else needs an explicit --force.
+        if previously_owned.get(rel) == actual:
+            return "update"
+        return "replace" if force else None
 
     # Phase 1: preflight the complete runtime. Nothing is written until every
     # managed-file conflict has been identified.
@@ -227,11 +303,12 @@ def configure(project: Path, harness: str, pin: str | None, dry_run: bool = Fals
                 actions.append({"path": rel, "action": "preserve-existing", "role": role})
                 records.append(FileRecord(rel, actual, role))
                 continue
-            if not force:
+            action = replace_action(rel, actual)
+            if action is None:
                 conflicts.append(rel)
                 actions.append({"path": rel, "action": "conflict", "role": role})
                 continue
-            actions.append({"path": rel, "action": "replace", "role": role})
+            actions.append({"path": rel, "action": action, "role": role})
         else:
             actions.append({"path": rel, "action": "create", "role": role})
         writes.append((target, data))
@@ -251,12 +328,12 @@ def configure(project: Path, harness: str, pin: str | None, dry_run: bool = Fals
             actual = sha256_file(target)
             if actual == expected:
                 action = "unchanged"
-            elif force:
-                action = "replace"
-                writes.append((target, data))
             else:
-                action = "conflict"
-                conflicts.append(rel)
+                action = replace_action(rel, actual) or "conflict"
+                if action == "conflict":
+                    conflicts.append(rel)
+                else:
+                    writes.append((target, data))
         else:
             action = "create"
             writes.append((target, data))
@@ -271,10 +348,31 @@ def configure(project: Path, harness: str, pin: str | None, dry_run: bool = Fals
             + ". Re-run with --force only if replacement is intentional."
         )
 
-    # Phase 2: apply the preflighted writes.
+    # Files owned by the previous config that the new projection no longer
+    # contains (another harness, or a file dropped by a newer runtime).
+    # Unmodified ones are removed; edited ones are left to the user, untracked.
+    current_paths = core_paths | adapter_paths | {"AGENTS.md", MANIFEST_PATH}
+    stale: list[Path] = []
+    for rel, recorded_sha in sorted(previously_owned.items()):
+        if rel in current_paths:
+            continue
+        target = _project_path(project, rel)
+        if target is None:
+            actions.append({"path": rel, "action": "skip-unsafe-path", "role": "stale"})
+        elif target.is_file():
+            if sha256_file(target) == recorded_sha:
+                actions.append({"path": rel, "action": "remove-stale", "role": "stale"})
+                stale.append(target)
+            else:
+                actions.append({"path": rel, "action": "preserve-modified-stale", "role": "stale"})
+
+    # Phase 2: apply the preflighted writes and stale removals.
     if not dry_run:
         for target, data in writes:
             _write(target, data)
+        for target in stale:
+            target.unlink()
+            _prune_empty_parents(project, target)
 
     root_record, root_action = _install_root_agents(project, dry_run)
     actions.append({"path": "AGENTS.md", "action": root_action, "role": "root-agents"})
@@ -368,7 +466,11 @@ def doctor(project: Path) -> dict:
     for rec in manifest.get("files", []):
         rel = rec["path"]
         role = rec.get("role", "managed")
-        target = project / rel
+        target = _project_path(project, rel)
+        if target is None:
+            errors.append(f"Unsafe path outside the project in manifest: {rel}")
+            checks.append({"path": rel, "status": "unsafe-path", "role": role})
+            continue
         if not target.exists():
             errors.append(f"Missing file: {rel}")
             checks.append({"path": rel, "status": "missing", "role": role})
@@ -430,7 +532,10 @@ def uninstall(project: Path, dry_run: bool = False, force: bool = False, purge_s
     for rec in sorted(manifest.get("files", []), key=lambda r: len(r["path"]), reverse=True):
         rel = rec["path"]
         role = rec.get("role", "managed")
-        target = project / rel
+        target = _project_path(project, rel)
+        if target is None:
+            actions.append({"path": rel, "action": "skip-unsafe-path"})
+            continue
         if not target.exists():
             continue
         if role == "seed" and not purge_seeds:

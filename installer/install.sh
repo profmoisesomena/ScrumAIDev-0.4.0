@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-VERSION="${SCRUMAIDEV_VERSION:-0.4.0}"
+VERSION="${SCRUMAIDEV_VERSION:-0.4.1}"
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 SOURCE="${1:-}"
 

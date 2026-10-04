@@ -525,5 +525,5 @@
   "model_policy": "inherit-session-model",
   "runtime_sha256": "5f01bb0dcb765766ee1f4132a69d2ee88073f1db38884d2a70709b0100582936",
   "schema_version": 2,
-  "scrumaidev_version": "0.4.0"
+  "scrumaidev_version": "0.4.1"
 }

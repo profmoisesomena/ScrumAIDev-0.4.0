@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scrumaidev"
-version = "0.4.0"
+version = "0.4.1"
 description = "ScrumAIDev — agile software development process for AI-assisted teams and agents"
 readme = "README.md"
 requires-python = ">=3.10"

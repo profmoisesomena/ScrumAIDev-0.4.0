@@ -45,7 +45,7 @@ Para uma ideia nova ou mudança ainda não classificada, `/scope-idea` é a entr
 
 ### Pré-requisitos
 
-Para a release `0.4.0`:
+Para a release `0.4.1`:
 
 - Python compatível com `>= 3.10` (o `uv` pode gerenciar o Python usado pela ferramenta);
 - `uv` recomendado, ou `pipx` como alternativa;
@@ -62,34 +62,34 @@ Em Windows, para OpenCode, prefira executar **VS Code + WSL/Ubuntu** e instalar 
 
 ### Opção A — instalar a partir do `release-bundle.zip` (recomendado para usuário final)
 
-Acesse a versão atual disponível em: https://github.com/profmoisesomena/ScrumAIDev-0.4.0/releases/tag/v0.4.0
+Acesse a versão atual disponível em: https://github.com/profmoisesomena/ScrumAIDev-0.4.0/releases/tag/v0.4.1
 
 Baixe e extraia:
 
 ```text
-ScrumAIDev-0.4.0-release-bundle.zip
+ScrumAIDev-0.4.1-release-bundle.zip
 ```
 
 Após a extração, você terá pelo menos:
 
 ```text
-ScrumAIDev-0.4.0-source.zip
-scrumaidev-0.4.0-py3-none-any.whl
-RELEASE_NOTES_0.4.0.md
-VALIDATION_REPORT_0.4.0.md
-ScrumAIDev-0.4.0-SHA256SUMS.txt
+ScrumAIDev-0.4.1-source.zip
+scrumaidev-0.4.1-py3-none-any.whl
+RELEASE_NOTES_0.4.1.md
+VALIDATION_REPORT_0.4.1.md
+ScrumAIDev-0.4.1-SHA256SUMS.txt
 ```
 
 Entre, no terminal, na pasta onde esses arquivos foram extraídos e execute:
 
 ```bash
-uv tool install --force ./scrumaidev-0.4.0-py3-none-any.whl
+uv tool install --force ./scrumaidev-0.4.1-py3-none-any.whl
 ```
 
 Se `uv` não estiver instalado, instale-o primeiro ou use `pipx`:
 
 ```bash
-pipx install --force ./scrumaidev-0.4.0-py3-none-any.whl
+pipx install --force ./scrumaidev-0.4.1-py3-none-any.whl
 ```
 
 Confirme a instalação:
@@ -102,7 +102,7 @@ scrumaidev adapters
 Esperado:
 
 ```text
-0.4.0
+0.4.1
 ```
 
 E os adapters:
@@ -114,7 +114,7 @@ codex        OpenAI Codex CLI         delivery=skills
 opencode     OpenCode                 delivery=commands+skills
 ```
 
-> O wheel instala a CLI. O arquivo `ScrumAIDev-0.4.0-source.zip` é destinado a inspeção, desenvolvimento e contribuição; ele não precisa ser copiado para o projeto usuário.
+> O wheel instala a CLI. O arquivo `ScrumAIDev-0.4.1-source.zip` é destinado a inspeção, desenvolvimento e contribuição; ele não precisa ser copiado para o projeto usuário.
 
 ---
 
@@ -163,25 +163,25 @@ pwd
 OpenCode:
 
 ```bash
-scrumaidev config --harness opencode --pin 0.4.0 --dry-run
+scrumaidev config --harness opencode --pin 0.4.1 --dry-run
 ```
 
 Codex:
 
 ```bash
-scrumaidev config --harness codex --pin 0.4.0 --dry-run
+scrumaidev config --harness codex --pin 0.4.1 --dry-run
 ```
 
 Claude Code:
 
 ```bash
-scrumaidev config --harness claude --pin 0.4.0 --dry-run
+scrumaidev config --harness claude --pin 0.4.1 --dry-run
 ```
 
 Google Antigravity:
 
 ```bash
-scrumaidev config --harness antigravity --pin 0.4.0 --dry-run
+scrumaidev config --harness antigravity --pin 0.4.1 --dry-run
 ```
 
 Leia o plano. Em um projeto novo, a maior parte das linhas deve aparecer como `create`.
@@ -193,25 +193,25 @@ Leia o plano. Em um projeto novo, a maior parte das linhas deve aparecer como `c
 Para OpenCode:
 
 ```bash
-scrumaidev config --harness opencode --pin 0.4.0
+scrumaidev config --harness opencode --pin 0.4.1
 ```
 
 Para Codex:
 
 ```bash
-scrumaidev config --harness codex --pin 0.4.0
+scrumaidev config --harness codex --pin 0.4.1
 ```
 
 Para Claude Code:
 
 ```bash
-scrumaidev config --harness claude --pin 0.4.0
+scrumaidev config --harness claude --pin 0.4.1
 ```
 
 Para Google Antigravity:
 
 ```bash
-scrumaidev config --harness antigravity --pin 0.4.0
+scrumaidev config --harness antigravity --pin 0.4.1
 ```
 
 Depois valide:
@@ -317,8 +317,8 @@ Use **outro projeto de teste**, para não misturar adapters durante a primeira v
 mkdir -p ~/scrumaidev-tests/test-codex
 cd ~/scrumaidev-tests/test-codex
 git init
-scrumaidev config --harness codex --pin 0.4.0 --dry-run
-scrumaidev config --harness codex --pin 0.4.0
+scrumaidev config --harness codex --pin 0.4.1 --dry-run
+scrumaidev config --harness codex --pin 0.4.1
 scrumaidev doctor
 ```
 
@@ -359,8 +359,8 @@ Use **outro projeto de teste**:
 mkdir -p ~/scrumaidev-tests/test-claude
 cd ~/scrumaidev-tests/test-claude
 git init
-scrumaidev config --harness claude --pin 0.4.0 --dry-run
-scrumaidev config --harness claude --pin 0.4.0
+scrumaidev config --harness claude --pin 0.4.1 --dry-run
+scrumaidev config --harness claude --pin 0.4.1
 scrumaidev doctor
 ```
 
@@ -401,8 +401,8 @@ Use **outro projeto de teste**:
 mkdir -p ~/scrumaidev-tests/test-antigravity
 cd ~/scrumaidev-tests/test-antigravity
 git init
-scrumaidev config --harness antigravity --pin 0.4.0 --dry-run
-scrumaidev config --harness antigravity --pin 0.4.0
+scrumaidev config --harness antigravity --pin 0.4.1 --dry-run
+scrumaidev config --harness antigravity --pin 0.4.1
 scrumaidev doctor
 ```
 
@@ -433,7 +433,7 @@ Depois que `scrumaidev doctor` retornar `ok`, antes de executar o fluxo agentic,
 
 ```bash
 git add .
-git commit -m "chore: baseline ScrumAIDev 0.4.0"
+git commit -m "chore: baseline ScrumAIDev 0.4.1"
 ```
 
 Assim, depois do teste, você poderá usar:

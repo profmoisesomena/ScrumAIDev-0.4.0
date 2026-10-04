@@ -1,4 +1,4 @@
-# Harness Capability Matrix — ScrumAIDev 0.4.0
+# Harness Capability Matrix — ScrumAIDev 0.4.x
 
 This matrix records the native delivery surface used by each official adapter. It describes integration capabilities, not the ScrumAIDev methodology itself.
 

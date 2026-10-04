@@ -21,7 +21,8 @@ class CodexAdapter(HarnessAdapter):
         project_instructions=True,
         hooks=False,
         subagents=False,
-        multi_install_safe=True,
+        # Shares `.agents/skills/scrumaidev-*` with the Antigravity adapter.
+        multi_install_safe=False,
     )
 
     @staticmethod

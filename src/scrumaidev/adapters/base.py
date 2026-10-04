@@ -22,6 +22,9 @@ class AdapterCapabilities:
     project_instructions: bool = True
     hooks: bool = False
     subagents: bool = False
+    # True only if this adapter's projection paths cannot collide with any
+    # other official adapter's, so a future multi-harness install could place
+    # both in one project. 0.4.x still configures one harness per project.
     multi_install_safe: bool = False
 
 

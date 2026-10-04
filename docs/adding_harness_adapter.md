@@ -50,7 +50,7 @@ class ExampleAdapter(HarnessAdapter):
         project_instructions=True,
         hooks=False,
         subagents=False,
-        multi_install_safe=True,
+        multi_install_safe=True,  # only if no path overlaps another adapter
     )
 
     def files(self, workflows):

@@ -93,6 +93,8 @@ multi_install_safe
 
 Capabilities are descriptive. They must not force a feature into a harness that does not provide it.
 
+`multi_install_safe` declares that the adapter's projection paths cannot collide with those of any other official adapter, so a future multi-harness installation (§12) could place both in the same project. It has no runtime effect in 0.4.x, which still configures one harness per project. Codex and Antigravity both project `.agents/skills/scrumaidev-<workflow>/SKILL.md` with different content and therefore declare `False`; OpenCode (`.opencode/`) and Claude Code (`.claude/`) declare `True`. `tests_cli/test_adapters.py` enforces that no two adapters declaring `True` share a path.
+
 ### 4.2 Optional shared-skill hook (additive in 0.3.0)
 
 ```python
@@ -268,7 +270,7 @@ Manifest shape:
       "project_instructions": true,
       "hooks": false,
       "subagents": false,
-      "multi_install_safe": true
+      "multi_install_safe": false
     }
   },
   "model_policy": "inherit-session-model",

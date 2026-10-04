@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.1 — Unreleased
+
+Bug-fix release for reconfiguring existing projects. No canonical workflow, skill, rule or adapter projection changed: `core_sha256` and every adapter `runtime_sha256` are identical to 0.4.0.
+
+### Fixed
+- Switching harness (for example `claude` → `opencode`) orphaned the previous adapter files: the manifest was overwritten without them, so `doctor` reported `ok` and `uninstall` never removed them. `config` now reads the previous manifest and removes files it installed that the new projection no longer contains (`remove-stale`); edited ones are left in place (`preserve-modified-stale`). The same applies to files dropped by a newer runtime on upgrade.
+- Reconfiguring reported ScrumAIDev's own unmodified files as user conflicts (for example `codex` → `antigravity`, which share `.agents/skills/scrumaidev-*/SKILL.md`, or an upgrade that changed a managed file), forcing `--force`. Files still byte-identical to their recorded hash are now updated (`update`); user-modified files still abort the preflight.
+- `scrumaidev config` without `--harness` silently switched an existing project to OpenCode. It now keeps the harness recorded in the manifest; OpenCode remains the default for a first install.
+- `doctor` and `uninstall` no longer follow manifest paths that resolve outside the project (`unsafe-path` / `skip-unsafe-path`).
+- `doctor` header uses an ASCII separator, which rendered as `�` on Windows code-page consoles.
+
+### Changed
+- `multi_install_safe` is now `False` for Codex and Antigravity, which project the same `.agents/skills/scrumaidev-*/SKILL.md` paths with different content; OpenCode and Claude Code keep `True`. The flag's meaning (no path overlap with any other official adapter, for future multi-harness installs) is now documented in the Adapter API v1. It only appears in manifest metadata: no runtime hash changes.
+
+### Added
+- `tests_cli/test_adapters.py::test_multi_install_safe_matches_projection_path_overlap`.
+- `tests_cli/test_harness_switch.py` (11 tests: harness switch, shared-path switch, recorded-harness default, edited stale file, dry-run, upgrade update, file dropped by newer runtime, user-modified conflict, unsafe manifest paths).
+
 ## 0.4.0 — Google Antigravity adapter
 
 Adds Google Antigravity as the fourth official harness. Validates for the second time that Harness Adapter API v1 generalizes to a new harness without core changes: no canonical workflow, skill, rule, `AGENTS.md` or other core file changed. OpenCode, Codex and Claude Code projections are byte-identical to 0.3.0.

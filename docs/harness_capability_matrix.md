@@ -21,6 +21,7 @@ This matrix records the native delivery surface used by each official adapter. I
 | Safe uninstall of unchanged adapter files | Yes | Yes | Yes | Yes |
 | Never writes the harness's own user files | n/a | n/a | Yes (`CLAUDE.md`, `.claude/settings*.json`) | Yes (`GEMINI.md`, `.gemini/`) |
 | Multi-harness installation in the same project | Not yet | Not yet | Not yet | Not yet |
+| `multi_install_safe` (no path overlap with other adapters) | `True` | `False` (shares paths with Antigravity) | `True` | `False` (shares paths with Codex) |
 
 ## Native projections
 

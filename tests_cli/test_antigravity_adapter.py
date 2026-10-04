@@ -66,7 +66,8 @@ def test_antigravity_capabilities_and_metadata():
     assert adapter.capabilities.project_instructions is True
     assert adapter.capabilities.hooks is False
     assert adapter.capabilities.subagents is False
-    assert adapter.capabilities.multi_install_safe is True
+    # Shares `.agents/skills/scrumaidev-*` paths with Codex.
+    assert adapter.capabilities.multi_install_safe is False
 
 
 def test_antigravity_invocation():

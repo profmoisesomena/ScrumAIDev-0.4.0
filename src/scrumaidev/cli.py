@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from . import __version__
-from .runtime_ops import configure, doctor, uninstall
+from .runtime_ops import DEFAULT_HARNESS, configure, doctor, uninstall
 from .adapters import adapter_catalog, supported_harnesses
 
 
@@ -33,7 +33,12 @@ def build_parser() -> argparse.ArgumentParser:
     ad.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
 
     cfg = sub.add_parser("config", help="Configure ScrumAIDev in an existing project")
-    cfg.add_argument("--harness", choices=supported_harnesses(), default="opencode")
+    cfg.add_argument(
+        "--harness",
+        choices=supported_harnesses(),
+        default=None,
+        help=f"Harness to configure (default: the one recorded in the project manifest, otherwise {DEFAULT_HARNESS})",
+    )
     cfg.add_argument("--project-dir", default=".")
     cfg.add_argument("--pin", help="Require this exact ScrumAIDev version")
     cfg.add_argument("--dry-run", action="store_true", help="Show planned changes without writing files")
@@ -88,7 +93,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.json:
                 print(json.dumps(result, indent=2, sort_keys=True))
             else:
-                print(f"ScrumAIDev doctor — {result['status']}")
+                print(f"ScrumAIDev doctor - {result['status']}")
                 print(f"Project: {result['project']}")
                 for warning in result.get("warnings", []):
                     print(f"WARNING: {warning}")

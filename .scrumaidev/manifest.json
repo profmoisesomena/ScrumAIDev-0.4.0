@@ -303,7 +303,7 @@
     {
       "path": "docs/adr/readme.md",
       "role": "seed",
-      "sha256": "2fcf4a6bd0989b6ce1f05d45e165e0926fe7e1bba75be1872c67c41d697f5052"
+      "sha256": "5d859336d0f6387fb77c63e2dab7f7b96b5ba0f8b3f2c18a171c1edc1ad2161e"
     },
     {
       "path": "docs/assumptions.md",
@@ -525,5 +525,5 @@
   "model_policy": "inherit-session-model",
   "runtime_sha256": "5f01bb0dcb765766ee1f4132a69d2ee88073f1db38884d2a70709b0100582936",
   "schema_version": 2,
-  "scrumaidev_version": "0.3.0"
+  "scrumaidev_version": "0.4.0"
 }

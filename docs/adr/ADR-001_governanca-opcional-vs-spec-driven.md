@@ -45,7 +45,7 @@ Elementos de infraestrutura pesada do spec-kit foram explicitamente **não adota
 
 ## Nota de Atualização (0.1.0rc1)
 
-A rejeição de "CLI própria instalável" registrada acima foi revisitada e parcialmente revertida. A partir da 0.1.0rc1, o ScrumAIDev passou a ser distribuído como uma CLI Python instalável (`scrumaidev config/doctor/uninstall`, ver `docs/distribution_architecture.md` e `RELEASE_NOTES_0.1.0rc1.md`), para permitir configurar projetos existentes sem exigir `git clone` do framework como base do projeto. Essa mudança resolveu um problema prático de reprodutibilidade/instalação e não foi motivada pelo mesmo objetivo do spec-kit (suporte nativo a dezenas de agentes de IA com sintaxes diferentes, marketplace de extensões). O restante da decisão original — rigor opcional escalonado pelo Modelo de Maturidade, em vez de spec-driven obrigatório — continua válido e não foi alterado.
+A rejeição de "CLI própria instalável" registrada acima foi revisitada e parcialmente revertida. A partir da 0.1.0rc1, o ScrumAIDev passou a ser distribuído como uma CLI Python instalável (`scrumaidev config/doctor/uninstall`, ver `docs/distribution_architecture.md` e `CHANGELOG.md`), para permitir configurar projetos existentes sem exigir `git clone` do framework como base do projeto. Essa mudança resolveu um problema prático de reprodutibilidade/instalação e não foi motivada pelo mesmo objetivo do spec-kit (suporte nativo a dezenas de agentes de IA com sintaxes diferentes, marketplace de extensões). O restante da decisão original — rigor opcional escalonado pelo Modelo de Maturidade, em vez de spec-driven obrigatório — continua válido e não foi alterado.
 
 ## Rastreabilidade
 

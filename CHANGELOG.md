@@ -27,6 +27,9 @@ Adds Google Antigravity as the fourth official harness. Validates for the second
 - `core_sha256` identical to 0.3.0 (and 0.2.0).
 - OpenCode, Codex and Claude Code `runtime_sha256` identical to 0.3.0.
 
+### Release status
+- Pre-promotion: tag `v0.4.0` and the GitHub release were published on 2026-10-02 after automated validation and the Antigravity live validation (A1–A12), but before the OpenCode, Codex and Claude Code live regression gates. See `docs/releases/VALIDATION_REPORT_0.4.0.md` and `docs/release_checklist.md`.
+
 ## 0.3.0 — Claude Code adapter
 
 Adds Claude Code as the third official harness. It is the first validation that Harness Adapter API v1 generalizes to an architecturally different harness: no canonical workflow, skill, rule, `AGENTS.md` or other core file changed, and OpenCode/Codex projections are byte-identical to 0.2.0.
@@ -82,7 +85,7 @@ Promotes the adapter architecture to a stable 0.2.x contract while preserving th
 - dry-run, all-or-nothing conflict preflight, hash-based doctor, safe `AGENTS.md` bridge and safe uninstall semantics remain in force.
 
 ### Validation
-See `RELEASE_NOTES_0.2.0.md` and `docs/adapter_live_validation_plan.md`.
+See `docs/releases/RELEASE_NOTES_0.2.0.md` and `docs/adapter_live_validation_plan.md`.
 
 ## 0.1.0 — First stable release
 

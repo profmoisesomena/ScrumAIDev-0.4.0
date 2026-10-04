@@ -2,7 +2,9 @@
 
 Before promoting an RC to a stable ScrumAIDev release:
 
-Evidence status updated 2026-10-02 from local Python 3.11.7 validation and maintainer-supplied Antigravity live evidence. Remaining unchecked items are promotion gates not yet evidenced/completed.
+Evidence status updated 2026-10-02 from local Python 3.11.7 validation and maintainer-supplied Antigravity live evidence; publication facts updated 2026-10-04. Remaining unchecked items are promotion gates not yet evidenced/completed.
+
+> **0.4.0 deviation:** the tag and GitHub release were published (2026-10-02) before the live cross-harness gates below were complete. 0.4.0 is a **pre-promotion** release: do not promote it publicly until the unchecked Live items pass. For future releases, push the tag only after every item in this checklist is checked, because pushing a `v*` tag publishes the release automatically (`cli-release.yml`).
 
 ## Automated
 
@@ -33,7 +35,9 @@ Evidence status updated 2026-10-02 from local Python 3.11.7 validation and maint
 
 ## Publication
 
-- [x] `RELEASE_NOTES_0.4.0.md` and `VALIDATION_REPORT_0.4.0.md` exist (required by `cli-release.yml`).
+- [x] `docs/releases/RELEASE_NOTES_0.4.0.md` and `docs/releases/VALIDATION_REPORT_0.4.0.md` exist (required by `cli-release.yml`).
 - [x] PR #1 opened; remote CI completed with 18 successful checks and 1 skipped Docker build.
-- [ ] Required live cross-harness gates complete, PR review approved, and PR merged to `main`.
-- [ ] tag and release artifacts are immutable and hashes are recorded.
+- [x] PR merged to `main` (merge commit `9c141e0`).
+- [ ] Required live cross-harness gates complete (see Live section) — **still open; merge and tag happened before this gate**.
+- [x] tag `v0.4.0` and release artifacts published; asset hashes recorded in `docs/releases/VALIDATION_REPORT_0.4.0.md`.
+- [ ] public promotion/announcement — blocked until the Live section is complete.

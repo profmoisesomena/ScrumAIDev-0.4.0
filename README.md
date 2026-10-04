@@ -45,7 +45,7 @@ Para uma ideia nova ou mudança ainda não classificada, `/scope-idea` é a entr
 
 ### Pré-requisitos
 
-Para a release `0.3.0`:
+Para a release `0.4.0`:
 
 - Python compatível com `>= 3.10` (o `uv` pode gerenciar o Python usado pela ferramenta);
 - `uv` recomendado, ou `pipx` como alternativa;
@@ -62,34 +62,34 @@ Em Windows, para OpenCode, prefira executar **VS Code + WSL/Ubuntu** e instalar 
 
 ### Opção A — instalar a partir do `release-bundle.zip` (recomendado para usuário final)
 
-Acesse o a versão atual disponivel em: https://github.com/profmoisesomena/ScrumAIDev-0.3.0/releases/tag/v0.3.0
+Acesse a versão atual disponível em: https://github.com/profmoisesomena/ScrumAIDev-0.4.0/releases/tag/v0.4.0
 
 Baixe e extraia:
 
 ```text
-ScrumAIDev-0.3.0-release-bundle.zip
+ScrumAIDev-0.4.0-release-bundle.zip
 ```
 
 Após a extração, você terá pelo menos:
 
 ```text
-ScrumAIDev-0.3.0-source.zip
-scrumaidev-0.3.0-py3-none-any.whl
-RELEASE_NOTES_0.3.0.md
-VALIDATION_REPORT_0.3.0.md
-ScrumAIDev-0.3.0-SHA256SUMS.txt
+ScrumAIDev-0.4.0-source.zip
+scrumaidev-0.4.0-py3-none-any.whl
+RELEASE_NOTES_0.4.0.md
+VALIDATION_REPORT_0.4.0.md
+ScrumAIDev-0.4.0-SHA256SUMS.txt
 ```
 
 Entre, no terminal, na pasta onde esses arquivos foram extraídos e execute:
 
 ```bash
-uv tool install --force ./scrumaidev-0.3.0-py3-none-any.whl
+uv tool install --force ./scrumaidev-0.4.0-py3-none-any.whl
 ```
 
 Se `uv` não estiver instalado, instale-o primeiro ou use `pipx`:
 
 ```bash
-pipx install --force ./scrumaidev-0.3.0-py3-none-any.whl
+pipx install --force ./scrumaidev-0.4.0-py3-none-any.whl
 ```
 
 Confirme a instalação:
@@ -102,7 +102,7 @@ scrumaidev adapters
 Esperado:
 
 ```text
-0.3.0
+0.4.0
 ```
 
 E os adapters:
@@ -114,7 +114,7 @@ codex        OpenAI Codex CLI         delivery=skills
 opencode     OpenCode                 delivery=commands+skills
 ```
 
-> O wheel instala a CLI. O arquivo `ScrumAIDev-0.3.0-source.zip` é destinado a inspeção, desenvolvimento e contribuição; ele não precisa ser copiado para o projeto usuário.
+> O wheel instala a CLI. O arquivo `ScrumAIDev-0.4.0-source.zip` é destinado a inspeção, desenvolvimento e contribuição; ele não precisa ser copiado para o projeto usuário.
 
 ---
 
@@ -317,8 +317,8 @@ Use **outro projeto de teste**, para não misturar adapters durante a primeira v
 mkdir -p ~/scrumaidev-tests/test-codex
 cd ~/scrumaidev-tests/test-codex
 git init
-scrumaidev config --harness codex --pin 0.3.0 --dry-run
-scrumaidev config --harness codex --pin 0.3.0
+scrumaidev config --harness codex --pin 0.4.0 --dry-run
+scrumaidev config --harness codex --pin 0.4.0
 scrumaidev doctor
 ```
 
@@ -359,8 +359,8 @@ Use **outro projeto de teste**:
 mkdir -p ~/scrumaidev-tests/test-claude
 cd ~/scrumaidev-tests/test-claude
 git init
-scrumaidev config --harness claude --pin 0.3.0 --dry-run
-scrumaidev config --harness claude --pin 0.3.0
+scrumaidev config --harness claude --pin 0.4.0 --dry-run
+scrumaidev config --harness claude --pin 0.4.0
 scrumaidev doctor
 ```
 
@@ -393,13 +393,47 @@ Valide os mesmos gates humanos e confirme no seletor de modelo que o modelo ativ
 
 ---
 
+### 5c. Fazer o primeiro teste real — Google Antigravity
+
+Use **outro projeto de teste**:
+
+```bash
+mkdir -p ~/scrumaidev-tests/test-antigravity
+cd ~/scrumaidev-tests/test-antigravity
+git init
+scrumaidev config --harness antigravity --pin 0.4.0 --dry-run
+scrumaidev config --harness antigravity --pin 0.4.0
+scrumaidev doctor
+```
+
+Abra a pasta no Antigravity (IDE) ou inicie `agy` na raiz do projeto. O Antigravity descobre nativamente `.agents/skills/`, lê o `AGENTS.md` e carrega `.agents/rules/`; o adapter só gera as 13 skills de workflow `.agents/skills/scrumaidev-<workflow>/SKILL.md` (sem `GEMINI.md` nem `.gemini/`).
+
+Confira no seletor de comandos que as 13 entradas `/scrumaidev-<workflow>` aparecem e execute:
+
+```text
+/scrumaidev-scope-idea Quero criar um pequeno sistema para alunos registrarem tarefas de um projeto com título, responsável, status e prazo.
+```
+
+Depois, conforme o fluxo exigir:
+
+```text
+/scrumaidev-discover
+/scrumaidev-requirements
+```
+
+O Antigravity não usa `$ARGUMENTS`: a skill toma como entrada o pedido atual e o contexto da conversa. As skills especialistas (`architect`, `qa-engineer` etc.) são descobertas diretamente em `.agents/skills/`, sem facades.
+
+Valide os mesmos gates humanos e confirme que o modelo ativo da sessão não mudou.
+
+---
+
 ### 6. Registrar uma baseline para comparar os harnesses
 
 Depois que `scrumaidev doctor` retornar `ok`, antes de executar o fluxo agentic, é recomendável registrar uma baseline Git:
 
 ```bash
 git add .
-git commit -m "chore: baseline ScrumAIDev 0.3.0"
+git commit -m "chore: baseline ScrumAIDev 0.4.0"
 ```
 
 Assim, depois do teste, você poderá usar:
@@ -411,7 +445,7 @@ git diff
 
 para ver exatamente quais artefatos o workflow criou ou alterou.
 
-Para comparação OpenCode × Codex × Claude Code, use a **mesma ideia inicial** nos projetos e registre:
+Para comparação OpenCode × Codex × Claude Code × Antigravity, use a **mesma ideia inicial** nos projetos e registre:
 
 - modelo utilizado;
 - tempo;
@@ -443,7 +477,8 @@ A arquitetura e o contrato para novos harnesses estão documentados em:
 - `docs/harness_capability_matrix.md`;
 - `docs/adding_harness_adapter.md`;
 - `docs/adr/ADR-003_harness-adapter-api.md`;
-- `docs/adr/ADR-004_claude-code-adapter.md`.
+- `docs/adr/ADR-004_claude-code-adapter.md`;
+- `docs/adr/ADR-005_antigravity-adapter.md`.
 
 ## 🤖 Workflows — Guias de Processo por IA
 
@@ -484,6 +519,8 @@ As skills transformam o agente em um especialista para cada contexto. O agente a
 | `story-refiner` | Product Owner Técnico | User stories INVEST, critérios de aceitação testáveis |
 | `technical-writer` | Escritor Técnico | READMEs, API docs, manuais, release notes |
 | `skill-creator` | Auxiliar de Meta-Skill | Criar/ajustar skills quando o projeto derivado não tiver uma pronta (uso auxiliar, sob revisão humana) |
+
+> **Limitação conhecida:** os scripts de avaliação do `skill-creator` (`run_eval.py`, `improve_description.py`, `generate_report.py`) chamam a CLI do Claude Code (`claude -p`). A skill é instalada para todos os harnesses, mas essa etapa de avaliação automatizada só funciona com o Claude Code disponível no ambiente. Veja `docs/harness_capability_matrix.md`.
 
 ---
 
@@ -545,7 +582,8 @@ meu-projeto/
 ├── .opencode/
 │   └── commands/                    ← adapter de slash commands
 │                                      (Codex: .agents/skills/scrumaidev-*/;
-│                                       Claude Code: .claude/rules/scrumaidev.md + .claude/skills/scrumaidev-*/)
+│                                       Claude Code: .claude/rules/scrumaidev.md + .claude/skills/scrumaidev-*/;
+│                                       Antigravity: .agents/skills/scrumaidev-*/)
 ├── templates/                       ← seeds ScrumAIDev
 ├── docs/                            ← artefatos que passam a pertencer ao projeto
 └── scripts/
@@ -699,5 +737,3 @@ NÃO leia o repositório completo, a menos que seja estritamente necessário.
 
 ---
 **Feito para times ágeis que querem amplificar sua produtividade com IA**
-#   S c r u m A I D e v - 0 . 4 . 0  
- 

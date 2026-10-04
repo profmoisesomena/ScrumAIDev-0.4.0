@@ -23,6 +23,11 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Application Frameworks"
 ]
 
+[project.urls]
+Repository = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0"
+Changelog = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0/blob/main/CHANGELOG.md"
+Releases = "https://github.com/profmoisesomena/ScrumAIDev-0.4.0/releases"
+
 [project.scripts]
 scrumaidev = "scrumaidev.cli:main"
 

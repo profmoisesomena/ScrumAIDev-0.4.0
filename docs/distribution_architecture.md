@@ -18,6 +18,7 @@ ScrumAIDev source repository
         |      +-- opencode
         |      +-- codex
         |      +-- claude
+        |      +-- antigravity
         |      +-- future adapters
         |
         v
@@ -33,7 +34,7 @@ Target project
         +-- AGENTS.md
         +-- .scrumaidev/
         +-- .agents/{rules,skills,workflows}/
-        +-- harness projection (for example .opencode/commands/ or .claude/skills/)
+        +-- harness projection (for example .opencode/commands/, .claude/skills/ or .agents/skills/scrumaidev-*/)
         +-- docs/
         +-- templates/
         +-- scripts/
@@ -46,11 +47,11 @@ Canonical ScrumAIDev process definitions live in the packaged core and are insta
 ```text
 .agents/workflows/requirements.md
              |
-        +----+----+-----------+
-        |         |           |
-        v         v           v
-  OpenCode      Codex     Claude Code
-  command       skill     skill (+ project rule)
+        +----+----+-----------+-------------+
+        |         |           |             |
+        v         v           v             v
+  OpenCode      Codex     Claude Code   Antigravity
+  command       skill     skill + rule     skill
 ```
 
 Harness differences are modeled explicitly as capabilities. The generic installer does not assume every harness supports commands, skills, hooks, or subagents.
@@ -94,6 +95,16 @@ Claude Code discovers project skills in `.claude/skills/` only and loads `.claud
 
 The adapter never writes `CLAUDE.md` or `.claude/settings*.json`. Facades contain no model override and do not fork into subagents, so the session model and human gates are preserved. See ADR-004.
 
+## Google Antigravity adapter
+
+Antigravity natively discovers `.agents/skills/`, reads `AGENTS.md` through its hierarchical rules and loads `.agents/rules/`. ScrumAIDev therefore generates only one namespaced workflow skill per canonical workflow, at the same path Codex uses:
+
+```text
+.agents/skills/scrumaidev-<workflow>/SKILL.md   # workflow facade: /scrumaidev-<workflow>
+```
+
+The facade reads the canonical `.agents/workflows/<workflow>.md`, takes the current request and conversation as input (Antigravity has no documented `$ARGUMENTS` primitive) and preserves the session model and human gates. No specialist facades, bridge rule, `GEMINI.md` or `.gemini/` directory are generated. Because Codex and Antigravity share these paths, they cannot be installed side by side in one project. See ADR-005.
+
 ## Reproducibility
 
 `.scrumaidev/manifest.json` schema v2 records:
@@ -116,6 +127,7 @@ scrumaidev adapters [--json]
 scrumaidev config --harness opencode [--pin VERSION] [--dry-run] [--force]
 scrumaidev config --harness codex [--pin VERSION] [--dry-run] [--force]
 scrumaidev config --harness claude [--pin VERSION] [--dry-run] [--force]
+scrumaidev config --harness antigravity [--pin VERSION] [--dry-run] [--force]
 scrumaidev doctor [--json]
 scrumaidev uninstall [--dry-run] [--force] [--purge-seeds]
 ```
@@ -124,8 +136,17 @@ scrumaidev uninstall [--dry-run] [--force] [--purge-seeds]
 
 ## Roadmap: multi-harness projects
 
-0.3.0 still selects one harness per project manifest. The Adapter API is intentionally designed so a later schema can track multiple installed integrations independently, including path-overlap checks and per-adapter uninstall/switch operations.
+0.4.x still selects one harness per project manifest. The Adapter API is intentionally designed so a later schema can track multiple installed integrations independently, including path-overlap checks and per-adapter uninstall/switch operations.
 
 ## Naming compatibility
 
-The official product name is **ScrumAIDev**. Legacy lowercase/internal `agileaidev_*` identifiers remain compatibility surfaces and should only be renamed through an explicit migration.
+The official product name is **ScrumAIDev**. The project was previously called *AgileAIDev*; the identifiers below keep the legacy name as compatibility surfaces and should only be renamed through an explicit migration (planned no earlier than 0.5.0, because several are part of the packaged runtime and renaming them changes `core_sha256` and paths in configured projects).
+
+| Legacy identifier | Where | Meaning today | Shipped in runtime |
+|---|---|---|---|
+| `agileaidev_level` | `docs/project_manifest.md` (Framework Maturity Defaults), `.agents/workflows/init-project.md` | The project's **Nível ScrumAIDev** (maturity level 0–4, `docs/maturity_model.md`) | yes |
+| `scripts/agileaidev_gate.py` | `Makefile` targets, `.github/workflows/ci.yml`, derived projects | ScrumAIDev quality-gate runner (`lint`, `test`, `validate-contract`, …) | yes |
+| `scripts/test_agileaidev_gate.py` | framework repository | Unit tests for the gate runner | no |
+| `docs/agileaidev_engineer_onboarding.md` | framework repository | ScrumAIDev engineer onboarding guide | no |
+
+When reading workflows, "Nível ScrumAIDev" and `agileaidev_level` refer to the same value.

@@ -39,6 +39,11 @@ EXCLUDED_FROM_RUNTIME = {
     "scripts/test_check_agent_docs_sync.py",
 }
 
+# Maintainer-only directories excluded wholesale (every file below them).
+EXCLUDED_DIRS_FROM_RUNTIME = (
+    "docs/releases/",  # release notes and validation reports of the framework
+)
+
 # Top-level seed files KNOWN to intentionally differ from their runtime
 # counterpart, because the runtime version omits framework-repo-specific
 # content (e.g. references to files in EXCLUDED_FROM_RUNTIME). Presence in
@@ -99,7 +104,9 @@ def test_every_shippable_top_level_file_is_in_the_runtime_payload():
     missing = [
         source_rel
         for source_rel in _iter_shippable_top_level_files()
-        if source_rel not in EXCLUDED_FROM_RUNTIME and source_rel not in runtime_source_rels
+        if source_rel not in EXCLUDED_FROM_RUNTIME
+        and not source_rel.startswith(EXCLUDED_DIRS_FROM_RUNTIME)
+        and source_rel not in runtime_source_rels
     ]
     assert not missing, (
         "Top-level files not present in the runtime payload and not listed in "

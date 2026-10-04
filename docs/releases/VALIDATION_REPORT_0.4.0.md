@@ -1,11 +1,12 @@
 # ScrumAIDev 0.4.0 — Validation Report
 
 Date: 2026-10-02  
-Status: **Automated validation passed; Antigravity live validation A1–A12 reported passed; cross-harness promotion gates and release publication remain pending.**
+Status: **Automated validation passed; Antigravity live validation A1–A12 reported passed; published as a pre-promotion release (tag `v0.4.0`, private repository) on 2026-10-02; OpenCode/Codex/Claude Code live regression gates remain pending.**
+Status updated: 2026-10-04 (publication facts only; no checks were re-executed).
 
 ## Scope and environment
 
-This report records checks executed against the 0.4.0 working tree and wheel, plus maintainer-supplied manual Antigravity evidence. The source commit has not yet been merged or tagged, and this report does not claim that a public release has been validated.
+This report records checks executed against the 0.4.0 working tree and wheel, plus maintainer-supplied manual Antigravity evidence. The automated and Antigravity checks below were executed before merge; the publication facts were recorded afterwards in [Publication status](#publication-status--pre-promotion). This report does not claim that a public, fully promoted release has been validated.
 
 - OS: Windows (local workstation)
 - Python: 3.11.7
@@ -63,9 +64,22 @@ The disposable workflow produced Discovery, Requirements, one User Story and a p
 
 - OpenCode, Codex and Claude Code 0.4.0 live regression sessions were not run. Their automated projections and hash regressions passed.
 - Claude Code VS Code extension UI and all-harness interactive brownfield validation were not run for this release.
-- Draft PR [#1](https://github.com/profmoisesomena/ScrumAIDev-0.4.0/pull/1) was opened from `feat/antigravity-adapter` to `main`.
-- PR CI completed: **18 checks successful, 1 skipped (Docker build; no Docker capability detected), 0 failing/cancelled/pending**. The checks validate CI only; they do not satisfy missing live harness acceptance checks or PR review/merge requirements.
-- The PR remains a draft and has not been merged to `main`.
-- No release tag, GitHub release or published assets/checksums exist. Creating the tag now would bypass the documented promotion gate.
+- PR CI for [#1](https://github.com/profmoisesomena/ScrumAIDev-0.4.0/pull/1) completed: **18 checks successful, 1 skipped (Docker build; no Docker capability detected), 0 failing/cancelled/pending**. The checks validate CI only; they do not satisfy the missing live harness acceptance checks.
+
+## Publication status — pre-promotion
+
+- PR #1 was merged into `main` (merge commit `9c141e0`) and tag `v0.4.0` was pushed on 2026-10-02.
+- The tag triggered `cli-release.yml`, which published the GitHub release `v0.4.0` in the **private** repository `profmoisesomena/ScrumAIDev-0.4.0` (not marked as pre-release on GitHub).
+- This happened **before** the promotion gate in `docs/adapter_live_validation_plan.md` §F was complete. The release is therefore classified as **pre-promotion**: usable by authorized users for evaluation, but not to be announced or promoted publicly until the OpenCode, Codex and Claude Code live regression checks pass. The tag is not moved or deleted, because published tags must stay immutable; any fix ships as 0.4.1.
+- Published asset checksums (`SHA256SUMS.txt` attached to the release):
+
+| Asset | SHA-256 |
+|---|---|
+| `scrumaidev-0.4.0-py3-none-any.whl` | `74c51aca84a09172cd73230d91964dfb69e6fa27155b8c8cf99c1f288c932661` |
+| `ScrumAIDev-0.4.0-release-bundle.zip` | `67bc533ba8ed841a4710b8b370a3fd461cb7f28b850500ea8fb7c0c589003b26` |
+| `install.sh` | `c7d5efea184bf475fa53d316a6a857a762363267930f3fc957f7fb91728087c7` |
+| `install.ps1` | `a3233b3ff52ae648458e5ccb45bc3eee0a152d4a51e5281b49272414a98aa01f` |
+
+The published wheel hash differs from the locally validated wheel (`a52f6428…`) because CI rebuilt it (wheel archives embed build-time metadata); the runtime content hashes (`core_sha256`, `runtime_sha256`) are what identify the payload. The bundled copy of this report predates this section.
 
 The remaining cross-harness gates are defined in `docs/adapter_live_validation_plan.md` and `docs/release_checklist.md`. This report distinguishes maintainer-reported manual evidence, local command output, automated tests and checks not executed in this session. Retain the supplied screenshots with PR/release review records if durable audit evidence is required.

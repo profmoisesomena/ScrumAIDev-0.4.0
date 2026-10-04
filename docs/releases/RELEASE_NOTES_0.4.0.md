@@ -2,7 +2,7 @@
 
 ScrumAIDev 0.4.0 adds Google Antigravity as its fourth harness adapter. The adapter uses Antigravity's repository-local Agent Skills discovery and keeps the ScrumAIDev workflow definitions canonical and harness-neutral.
 
-> **Release gate:** automated package validation is recorded in `VALIDATION_REPORT_0.4.0.md`. Real Antigravity live validation (A1–A12) has not yet been performed. Do not treat this build as ready for public promotion until that validation and the remaining checks in `docs/release_checklist.md` are complete.
+> **Release status — pre-promotion:** automated package validation and the Antigravity live validation (A1–A12) passed; see `VALIDATION_REPORT_0.4.0.md`. The tag and GitHub release were published on 2026-10-02 before the OpenCode, Codex and Claude Code live regression checks were run. Use this build for evaluation; do not promote it publicly until those checks in `docs/release_checklist.md` are complete.
 
 ## Added
 
@@ -22,5 +22,11 @@ ScrumAIDev 0.4.0 adds Google Antigravity as its fourth harness adapter. The adap
 ## Validation status
 
 - Automated validation and isolated wheel smoke test: see `VALIDATION_REPORT_0.4.0.md`.
-- **Pending:** Antigravity interactive validation A1–A12, including native skill discovery, session model preservation and human gates.
-- **Pending:** remaining live regression checks, CI run evidence and release tag/artifact publication.
+- **Passed:** Antigravity interactive validation A1–A12, including native skill discovery, session model preservation, human gates, brownfield safety and uninstall (maintainer-reported evidence).
+- **Passed:** PR CI (18 successful checks, 1 skipped Docker build). Tag `v0.4.0` and release artifacts published; checksums recorded in the validation report.
+- **Pending:** OpenCode, Codex and Claude Code live regression checks (promotion gate).
+
+## Known limitations
+
+- Switching harness or upgrading an already configured project can leave the previous adapter files behind, untracked by the manifest; `config` without `--harness` switches an existing project to OpenCode. Fix prepared for 0.4.1. Workaround for 0.4.0: run `scrumaidev uninstall` before configuring another harness, and always pass `--harness`.
+- The shared `skill-creator` skill's evaluation scripts call the Claude Code CLI (`claude -p`); that step only works where Claude Code is installed.

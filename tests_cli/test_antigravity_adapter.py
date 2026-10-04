@@ -327,7 +327,7 @@ def test_four_distinct_runtime_sha256(tmp_path: Path):
 
 def test_existing_harness_hashes_unchanged():
     """The three pre-existing runtime projections must remain byte-identical
-    to the 0.3.0 values recorded in VALIDATION_REPORT_0.3.0.md."""
+    to the 0.3.0 values recorded in docs/releases/VALIDATION_REPORT_0.3.0.md."""
     ref_core = "a8d9dbc7ddf5ae56ec6f52fa1b4ddc8ef7f5612ac903c458e3e4e1c152c55855"
     ref_opencode = "5f01bb0dcb765766ee1f4132a69d2ee88073f1db38884d2a70709b0100582936"
     ref_codex = "fc5b58065b1f8773faec99b99e623c35c8bb630358216b8775ebf75c7913c01a"

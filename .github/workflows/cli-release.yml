@@ -44,9 +44,9 @@ jobs:
 
           # Documentation
           cp README.md "$BUNDLE_DIR/README.md"
-          cp "RELEASE_NOTES_${VERSION}.md" \
+          cp "docs/releases/RELEASE_NOTES_${VERSION}.md" \
              "$BUNDLE_DIR/RELEASE_NOTES_${VERSION}.md"
-          cp "VALIDATION_REPORT_${VERSION}.md" \
+          cp "docs/releases/VALIDATION_REPORT_${VERSION}.md" \
              "$BUNDLE_DIR/VALIDATION_REPORT_${VERSION}.md"
 
           # Use exactly the same wheel that will be published
